@@ -22,7 +22,8 @@ namespace DXReminder {
         public MainWindow() {
             InitializeComponent();
             vm = new BaseViewModel();
-            DataContext = this;
+            DataContext = vm;
+         
         }
         BaseViewModel vm;
     }
