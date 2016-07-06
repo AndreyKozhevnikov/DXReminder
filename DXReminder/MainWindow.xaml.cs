@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DXReminder.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,9 @@ namespace DXReminder {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+            vm = new BaseViewModel();
+            DataContext = this;
         }
+        BaseViewModel vm;
     }
 }
