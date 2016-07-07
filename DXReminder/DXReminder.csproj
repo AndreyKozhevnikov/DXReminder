@@ -78,7 +78,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Classes\ReminderStore.cs" />
+    <Compile Include="Classes\BaseViewModel.cs" />
+    <Compile Include="Classes\Reminder.cs" />
+    <Compile Include="Classes\ReminderSerializer.cs" />
     <Compile Include="Classes\Tests.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

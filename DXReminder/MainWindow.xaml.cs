@@ -26,5 +26,13 @@ namespace DXReminder {
          
         }
         BaseViewModel vm;
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            vm.Temp_Serialize();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e) {
+            vm.Temp_CreateReminder();
+        }
     }
 }

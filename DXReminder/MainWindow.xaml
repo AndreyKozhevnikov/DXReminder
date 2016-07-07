@@ -34,6 +34,8 @@
                         </dxe:DateEdit>
                     </dxlc:LayoutItem>
                     <Button Content="Add" Command="{Binding AddNewReminderCommand}"/>
+                    <Button Content="temp add" Click="Button_Click_1"/>
+                    <Button Content="serialize" Click="Button_Click"/>
                 </dxlc:LayoutGroup>
             </dxlc:LayoutControl>
         </Grid>
