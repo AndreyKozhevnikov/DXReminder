@@ -91,7 +91,7 @@ namespace DXReminder.Classes {
         public void ReminderSerializer_GetXMLFromReminders() {
             //arrange
             Reminder r1 = new Reminder("rem1", 1, new DateTime(1, 1, 1, 11, 11, 0));
-            Reminder r2 = new Reminder("rem2", 2, new DateTime(1, 1, 1, 9, 9, 0)); 
+            Reminder r2 = new Reminder("rem2", 2, new DateTime(1, 1, 1, 9, 9, 0));
             ObservableCollection<Reminder> col = new ObservableCollection<Reminder>();
             col.Add(r1);
             col.Add(r2);

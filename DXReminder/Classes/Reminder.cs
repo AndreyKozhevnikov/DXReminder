@@ -18,7 +18,7 @@ namespace DXReminder.Classes {
         public Reminder(string _description, int _dayOfWeek, DateTime _time) {
             Description = _description;
             DayOfWeek = _dayOfWeek;
-            Time = _time; 
+            Time = _time;
         }
         public override string ToString() {
             var s = Enum.GetName(typeof(System.DayOfWeek), DayOfWeek);
