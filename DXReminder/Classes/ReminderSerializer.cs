@@ -9,12 +9,22 @@ using System.Xml.Linq;
 
 namespace DXReminder.Classes {
     public class ReminderSerializer {
-
+        const string fileName = "Reminders.xml";
         internal void Serialize(ObservableCollection<Reminder> reminders) {
             XElement st = GetXMLFromReminders(reminders);
-            StreamWriter sw = new StreamWriter("Reminders.xml");
+
+            
+            CheckIfFileExistAndCreateBackup();
+            StreamWriter sw = new StreamWriter(fileName);
             sw.Write(st);
             sw.Close();
+        }
+
+        private void CheckIfFileExistAndCreateBackup() {
+            var b = File.Exists(fileName);
+            if (b) {
+                File.Copy(fileName, fileName + ".bak");
+            }
         }
 
         private XElement GetXMLFromReminders(ObservableCollection<Reminder> reminders) {
