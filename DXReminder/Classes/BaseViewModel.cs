@@ -10,7 +10,8 @@ using System.Windows.Input;
 namespace DXReminder.Classes {
     public class BaseViewModel {
         public BaseViewModel() {
-            Reminders = new ObservableCollection<Reminder>();
+            serializer = new ReminderSerializer();
+            Deserialize();
         }
         public ObservableCollection<Reminder> Reminders { get; set; }
         ICommand _addNewReminderCommand;
@@ -35,16 +36,15 @@ namespace DXReminder.Classes {
      
 
         void Serialize() {
-            CreateSerializeIfNeeded();
+          
             serializer.Serialize(Reminders);
         }
 
-        private void CreateSerializeIfNeeded() {
-            if (serializer == null)
-                serializer = new ReminderSerializer();
+        void Deserialize() {
+            Reminders= serializer.Deserialize();
         }
 
-
+    
 
         public void Temp_Serialize() {
             this.Serialize();
@@ -56,9 +56,6 @@ namespace DXReminder.Classes {
         }
 
         #region For_Test
-        public void Test_CreateSerializerIfNeeded() {
-            CreateSerializeIfNeeded();
-        }
         public ReminderSerializer Test_Serializer {
             get { return serializer; }
         }

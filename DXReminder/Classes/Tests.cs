@@ -47,31 +47,7 @@ namespace DXReminder.Classes {
             //assert
             Assert.AreEqual("test - Monday - 15:15", st);
         }
-        [Test]
-        public void BaseViewModel_CreateSerializerIfNeeded_Yes() {
-            //arrange
-            BaseViewModel vm = new BaseViewModel();
 
-            //act
-            vm.Test_CreateSerializerIfNeeded();
-            var ser1 = vm.Test_Serializer;
-            vm.Test_CreateSerializerIfNeeded();
-            var ser2 = vm.Test_Serializer;
-            //assert
-            Assert.AreEqual(ser1, ser2);
-        }
-        [Test]
-        public void BaseViewModel_CreateSerializerIfNeeded_No() {
-            //arrange
-            BaseViewModel vm = new BaseViewModel();
-
-            //act
-            vm.Test_CreateSerializerIfNeeded();
-            var ser1 = vm.Test_Serializer;
-          
-            //assert
-            Assert.AreNotEqual(null, ser1);
-        }
         [Test]
         public void Reminder_GetXML() {
             //arrange
@@ -107,11 +83,56 @@ namespace DXReminder.Classes {
             xl2.Add(new XAttribute("DayOfWeek", "2"));
             xlBase.Add(xl1);
             xlBase.Add(xl2);
-
-            //act
             ReminderSerializer r = new ReminderSerializer();
+            //act
+
             XElement xRes = r.Test_GetXMLFromReminders(col);
             Boolean b = XElement.DeepEquals(xlBase, xRes);
+        }
+        [Test]
+        public void ReminderSerializer_GetRemindersFromXML() {
+            //arrange
+            ReminderSerializer r = new ReminderSerializer();
+            XElement xlBase = new XElement("Reminders");
+            XElement xl1 = new XElement("Reminder");
+            xl1.Add(new XAttribute("Description", "rem1"));
+            xl1.Add(new XAttribute("Time", "11:11"));
+            xl1.Add(new XAttribute("DayOfWeek", "1"));
+            XElement xl2 = new XElement("Reminder");
+            xl2.Add(new XAttribute("Description", "rem2"));
+            xl2.Add(new XAttribute("Time", "09:09"));
+            xl2.Add(new XAttribute("DayOfWeek", "2"));
+            xlBase.Add(xl1);
+            xlBase.Add(xl2);
+
+            //act
+            ObservableCollection<Reminder> col = r.Test_GetRemindersFromXML(xlBase);
+
+            //assert
+            Assert.AreEqual(2, col.Count);
+            Assert.AreEqual("rem1", col[0].Description);
+            Assert.AreEqual(new DateTime(1,1,1,11,11,0).Hour, col[0].Time.Hour);
+            Assert.AreEqual(new DateTime(1, 1, 1, 11, 11, 0).Minute, col[0].Time.Minute);
+            Assert.AreEqual(1, col[0].DayOfWeek);
+            Assert.AreEqual("rem2", col[1].Description);
+            Assert.AreEqual(new DateTime(1, 1, 1, 9, 9, 0).Hour, col[1].Time.Hour);
+            Assert.AreEqual(new DateTime(1, 1, 1, 9, 9, 0).Minute, col[1].Time.Minute);
+            Assert.AreEqual(2, col[1].DayOfWeek);
+        }
+        [Test]
+        public void Reminder_XMLConstructor() {
+            //arrange
+            XElement xl2 = new XElement("Reminder");
+            xl2.Add(new XAttribute("Description", "rem2"));
+            xl2.Add(new XAttribute("Time", "09:09"));
+            xl2.Add(new XAttribute("DayOfWeek", "2"));
+            //act
+            Reminder r = new Reminder(xl2);
+            //assert
+            Assert.AreEqual("rem2", r.Description);
+            Assert.AreEqual(new DateTime(1, 1, 1, 9, 9, 0).Hour, r.Time.Hour);
+            Assert.AreEqual(new DateTime(1, 1, 1, 9, 9, 0).Minute, r.Time.Minute);
+            Assert.AreEqual(2, r.DayOfWeek);
         }
 
     }

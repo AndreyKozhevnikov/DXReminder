@@ -20,6 +20,13 @@ namespace DXReminder.Classes {
             DayOfWeek = _dayOfWeek;
             Time = _time;
         }
+        public Reminder(XElement xl) {
+            Description = xl.Attribute("Description").Value;
+            var _time = xl.Attribute("Time").Value;
+            var _dayOfWeek = xl.Attribute("DayOfWeek").Value;
+            Time = DateTime.Parse(_time);
+            DayOfWeek = int.Parse(_dayOfWeek);
+        }
         public override string ToString() {
             var s = Enum.GetName(typeof(System.DayOfWeek), DayOfWeek);
             string st = string.Format("{0} - {1} - {2}", Description, s, Time.ToString("HH:mm"));
