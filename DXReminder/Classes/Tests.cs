@@ -26,6 +26,7 @@ namespace DXReminder.Classes {
         public void BaseViewModel_AddNewReminder() {
             //arrange
             BaseViewModel vm = new BaseViewModel();
+            vm.Reminders = new ObservableCollection<Reminder>();
             vm.TempDescription = "testd";
             vm.TempDayOfWeek = 6;
             vm.TempTime = new DateTime(1, 1, 1, 18, 56, 0);

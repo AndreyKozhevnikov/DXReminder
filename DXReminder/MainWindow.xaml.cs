@@ -22,6 +22,7 @@ namespace DXReminder {
         public MainWindow() {
             InitializeComponent();
             vm = new BaseViewModel();
+            vm.Deserialize();
             DataContext = vm;
          
         }

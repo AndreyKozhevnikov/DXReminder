@@ -11,7 +11,7 @@ namespace DXReminder.Classes {
     public class BaseViewModel {
         public BaseViewModel() {
             serializer = new ReminderSerializer();
-            Deserialize();
+          
         }
         public ObservableCollection<Reminder> Reminders { get; set; }
         ICommand _addNewReminderCommand;
@@ -40,7 +40,7 @@ namespace DXReminder.Classes {
             serializer.Serialize(Reminders);
         }
 
-        void Deserialize() {
+       public void Deserialize() {
             Reminders= serializer.Deserialize();
         }
 
