@@ -11,14 +11,14 @@ namespace DXReminder.Classes {
     public class BaseViewModel {
         public BaseViewModel() {
             serializer = new ReminderSerializer();
-          
+
         }
         public ObservableCollection<Reminder> Reminders { get; set; }
         ICommand _addNewReminderCommand;
         ReminderSerializer serializer;
-        public string TempDescription { get; set; }
-        public int TempDayOfWeek { get; set; }
-        public DateTime TempTime { get; set; }
+        public string UIDescription { get; set; }
+        public int UIDayOfWeek { get; set; }
+        public DateTime UITime { get; set; }
 
         public ICommand AddNewReminderCommand {
             get {
@@ -29,31 +29,36 @@ namespace DXReminder.Classes {
         }
 
         private void AddNewReminder() {
-            Reminder r = new Reminder(TempDescription, TempDayOfWeek, TempTime);
-            Reminders.Add(r); 
+            if (string.IsNullOrEmpty(UIDescription)) {
+                return;
+            }
+            Reminder r = new Reminder(UIDescription, UIDayOfWeek, UITime);
+            Reminders.Add(r);
         }
 
-     
+
 
         void Serialize() {
-          
+
             serializer.Serialize(Reminders);
         }
 
-       public void Deserialize() {
-            Reminders= serializer.Deserialize();
+        public void Deserialize() {
+            Reminders = serializer.Deserialize();
         }
 
-    
 
+        #region temp
         public void Temp_Serialize() {
             this.Serialize();
         }
 
-    public    void Temp_CreateReminder() {
+
+        public void Temp_CreateReminder() {
             Reminders.Add(new Reminder("test", 1, new DateTime(1, 1, 1, 23, 23, 0)));
             Reminders.Add(new Reminder("test2", 1, new DateTime(1, 1, 1, 11, 24, 0)));
         }
+        #endregion
 
         #region For_Test
         public ReminderSerializer Test_Serializer {

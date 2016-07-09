@@ -17,17 +17,17 @@
             <dxlc:LayoutControl>
                 <dxlc:LayoutGroup Orientation="Vertical">
                     <dxlc:LayoutItem Label="Description:" >
-                        <dxe:TextEdit  EditValue="{Binding TempDescription}"/>
+                        <dxe:TextEdit  EditValue="{Binding UIDescription}"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="DayOfWeek:" >
-                        <dxe:ComboBoxEdit  EditValue="{Binding TempDayOfWeek}">
+                        <dxe:ComboBoxEdit  EditValue="{Binding UIDayOfWeek}" IsTextEditable="False">
                             <dxe:ComboBoxEdit.ItemsSource>
                                 <dxe:EnumItemsSource EnumType="{x:Type sys:DayOfWeek}" UseNumericEnumValue="True"/>
                             </dxe:ComboBoxEdit.ItemsSource>
                         </dxe:ComboBoxEdit>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Time:" >
-                        <dxe:DateEdit  EditValue="{Binding TempTime}" MaskType="DateTime" Mask="HH:mm" MaskUseAsDisplayFormat="True" >
+                        <dxe:DateEdit  EditValue="{Binding UITime}" MaskType="DateTime" Mask="HH:mm" MaskUseAsDisplayFormat="True" >
                             <dxe:DateEdit.StyleSettings>
                                 <dxe:DateEditPickerStyleSettings/>
                             </dxe:DateEdit.StyleSettings>
@@ -36,6 +36,7 @@
                     <Button Content="Add" Command="{Binding AddNewReminderCommand}"/>
                     <Button Content="temp add" Click="Button_Click_1"/>
                     <Button Content="serialize" Click="Button_Click"/>
+                    <Button Content="test" Click="Button_Click_2"/>
                 </dxlc:LayoutGroup>
             </dxlc:LayoutControl>
         </Grid>

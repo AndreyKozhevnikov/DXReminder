@@ -35,5 +35,10 @@ namespace DXReminder {
         private void Button_Click_1(object sender, RoutedEventArgs e) {
             vm.Temp_CreateReminder();
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e) {
+            RemindProcessor proc = new RemindProcessor(null);
+            proc.Start();
+        }
     }
 }

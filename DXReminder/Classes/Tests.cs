@@ -27,9 +27,9 @@ namespace DXReminder.Classes {
             //arrange
             BaseViewModel vm = new BaseViewModel();
             vm.Reminders = new ObservableCollection<Reminder>();
-            vm.TempDescription = "testd";
-            vm.TempDayOfWeek = 6;
-            vm.TempTime = new DateTime(1, 1, 1, 18, 56, 0);
+            vm.UIDescription = "testd";
+            vm.UIDayOfWeek = 6;
+            vm.UITime = new DateTime(1, 1, 1, 18, 56, 0);
             //act
             vm.AddNewReminderCommand.Execute(null);
             //assert
@@ -38,6 +38,18 @@ namespace DXReminder.Classes {
             Assert.AreEqual(6, vm.Reminders[0].DayOfWeek);
             Assert.AreEqual(18, vm.Reminders[0].Time.Hour);
             Assert.AreEqual(56, vm.Reminders[0].Time.Minute);
+        }
+        [Test]
+        public void BaseViewModel_AddNewReminderWithEmptyDescription() {
+            //arrange
+            BaseViewModel vm = new BaseViewModel();
+            vm.Reminders = new ObservableCollection<Reminder>();
+            vm.UIDayOfWeek = 6;
+            vm.UITime = new DateTime(1, 1, 1, 18, 56, 0);
+            //act
+            vm.AddNewReminderCommand.Execute(null);
+            //assert
+            Assert.AreEqual(0, vm.Reminders.Count);
         }
         [Test]
         public void ReminderStore_ToString() {
