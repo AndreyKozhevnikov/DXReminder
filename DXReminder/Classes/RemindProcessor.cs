@@ -28,7 +28,7 @@ namespace DXReminder.Classes {
             int currHour = DateTime.Today.Hour;
             int currMinute = DateTime.Today.Minute;
 
-            var list = reminders.Where(x => x.DayOfWeek == currDayOfWeek && x.Time.Hour == currHour && x.Time.Minute == currMinute).ToList();
+         //   var list = reminders.Where(x => x.DayOfWeek == currDayOfWeek && x.Time.Hour == currHour && x.Time.Minute == currMinute).ToList();
 
         }
 

@@ -18,7 +18,7 @@ namespace DXReminder.Classes {
         ReminderSerializer serializer;
         public string UIDescription { get; set; }
         public int UIDayOfWeek { get; set; }
-        public DateTime UITime { get; set; }
+        public List<DateTime> UITimeList { get; set; }
 
         public ICommand AddNewReminderCommand {
             get {
@@ -32,7 +32,7 @@ namespace DXReminder.Classes {
             if (string.IsNullOrEmpty(UIDescription)) {
                 return;
             }
-            Reminder r = new Reminder(UIDescription, UIDayOfWeek, UITime);
+            Reminder r = new Reminder(UIDescription, UIDayOfWeek, UITimeList);
             Reminders.Add(r);
         }
 
@@ -55,8 +55,8 @@ namespace DXReminder.Classes {
 
 
         public void Temp_CreateReminder() {
-            Reminders.Add(new Reminder("test", 1, new DateTime(1, 1, 1, 23, 23, 0)));
-            Reminders.Add(new Reminder("test2", 1, new DateTime(1, 1, 1, 11, 24, 0)));
+          //  Reminders.Add(new Reminder("test", 1, new DateTime(1, 1, 1, 23, 23, 0)));
+          //  Reminders.Add(new Reminder("test2", 1, new DateTime(1, 1, 1, 11, 24, 0)));
         }
         #endregion
 
