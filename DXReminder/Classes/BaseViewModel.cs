@@ -29,7 +29,7 @@ namespace DXReminder.Classes {
         }
 
         private void AddNewReminder() {
-            if (string.IsNullOrEmpty(UIDescription)) {
+            if (string.IsNullOrEmpty(UIDescription)||UIDayOfWeekList==null || UITimeList==null) {
                 return;
             }
             Reminder r = new Reminder(UIDescription, UIDayOfWeekList, UITimeList);

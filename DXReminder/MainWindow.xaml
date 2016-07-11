@@ -20,7 +20,10 @@
                         <dxe:TextEdit  EditValue="{Binding UIDescription}"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="DayOfWeek:" >
-                        <dxe:ComboBoxEdit  EditValue="{Binding UIDayOfWeek}" IsTextEditable="False">
+                        <dxe:ComboBoxEdit  EditValue="{Binding UIDayOfWeekList,Converter={local:DayOfWeekConverter}}" IsTextEditable="False">
+                            <dxe:ComboBoxEdit.StyleSettings>
+                                <dxe:TokenComboBoxStyleSettings/>
+                            </dxe:ComboBoxEdit.StyleSettings>
                             <dxe:ComboBoxEdit.ItemsSource>
                                 <dxe:EnumItemsSource EnumType="{x:Type sys:DayOfWeek}" UseNumericEnumValue="True"/>
                             </dxe:ComboBoxEdit.ItemsSource>

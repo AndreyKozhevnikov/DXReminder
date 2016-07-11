@@ -57,7 +57,7 @@ namespace DXReminder.Classes {
             Assert.AreEqual(56, vm.Reminders[0].TimeList[0].Minute);
         }
         [Test]
-        public void BaseViewModel_AddNewReminderWithEmptyDescription() {
+        public void BaseViewModel_AddNewReminderDescriptionNull() {
             //arrange
             BaseViewModel vm = new BaseViewModel();
             vm.Reminders = new ObservableCollection<Reminder>();
@@ -67,6 +67,39 @@ namespace DXReminder.Classes {
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 18, 56, 0));
             vm.UITimeList = tList;
+            //act
+            vm.AddNewReminderCommand.Execute(null);
+            //assert
+            Assert.AreEqual(0, vm.Reminders.Count);
+        }
+        [Test]
+        public void BaseViewModel_AddNewReminderDayListNull() {
+            //arrange
+            BaseViewModel vm = new BaseViewModel();
+            vm.UIDescription = "test";
+
+            vm.Reminders = new ObservableCollection<Reminder>();
+        
+
+            var tList = new List<DateTime>();
+            tList.Add(new DateTime(1, 1, 1, 18, 56, 0));
+            vm.UITimeList = tList;
+            //act
+            vm.AddNewReminderCommand.Execute(null);
+            //assert
+            Assert.AreEqual(0, vm.Reminders.Count);
+        }
+        [Test]
+        public void BaseViewModel_AddNewReminderTimeListNull() {
+            //arrange
+            BaseViewModel vm = new BaseViewModel();
+            vm.UIDescription = "test";
+
+            vm.Reminders = new ObservableCollection<Reminder>();
+            var dList = new List<int>();
+            dList.Add(6);
+            vm.UIDayOfWeekList = dList;
+          
             //act
             vm.AddNewReminderCommand.Execute(null);
             //assert
