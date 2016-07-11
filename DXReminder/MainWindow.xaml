@@ -6,11 +6,11 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:DXReminder"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="450" Width="525">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <ListBox ItemsSource="{Binding Reminders}"/>
         <Grid Grid.Row="1">
@@ -30,11 +30,12 @@
                         </dxe:ComboBoxEdit>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Time:" >
-                        <dxe:DateEdit  EditValue="{Binding UITime}" MaskType="DateTime" Mask="HH:mm" MaskUseAsDisplayFormat="True" >
+                        <!--<dxe:DateEdit  EditValue="{Binding UITime}" MaskType="DateTime" Mask="HH:mm" MaskUseAsDisplayFormat="True" >
                             <dxe:DateEdit.StyleSettings>
                                 <dxe:DateEditPickerStyleSettings/>
                             </dxe:DateEdit.StyleSettings>
-                        </dxe:DateEdit>
+                        </dxe:DateEdit>-->
+                        <local:TimeControl EditValue="{Binding UITimeList,Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
                     <Button Content="Add" Command="{Binding AddNewReminderCommand}"/>
                     <Button Content="temp add" Click="Button_Click_1"/>
