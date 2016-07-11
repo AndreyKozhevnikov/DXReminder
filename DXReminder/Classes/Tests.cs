@@ -16,12 +16,23 @@ namespace DXReminder.Classes {
             //act
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 12, 25, 0));
-            var r = new Reminder("testdescrption", 4,tList );
+            tList.Add(new DateTime(1, 1, 1, 5, 5, 0));
+            var dList = new List<int>();
+            dList.Add(4);
+            dList.Add(1);
+            dList.Add(2);
+            var r = new Reminder("testdescrption", dList, tList );
             //assert
             Assert.AreEqual("testdescrption", r.Description);
-            Assert.AreEqual(4, r.DayOfWeek);
+            Assert.AreEqual(3, r.DayOfWeekList.Count);
+            Assert.AreEqual(4, r.DayOfWeekList[0]);
+            Assert.AreEqual(1, r.DayOfWeekList[1]);
+            Assert.AreEqual(2, r.DayOfWeekList[2]);
+            Assert.AreEqual(2, r.TimeList.Count);
             Assert.AreEqual(12, r.TimeList[0].Hour);
             Assert.AreEqual(25, r.TimeList[0].Minute);
+            Assert.AreEqual(5, r.TimeList[1].Hour);
+            Assert.AreEqual(5, r.TimeList[1].Minute);
 
         }
         [Test]
@@ -30,7 +41,9 @@ namespace DXReminder.Classes {
             BaseViewModel vm = new BaseViewModel();
             vm.Reminders = new ObservableCollection<Reminder>();
             vm.UIDescription = "testd";
-            vm.UIDayOfWeek = 6;
+            var dList = new List<int>();
+            dList.Add(6);
+            vm.UIDayOfWeekList = dList;
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 18, 56, 0));
             vm.UITimeList = tList;
@@ -39,7 +52,7 @@ namespace DXReminder.Classes {
             //assert
             Assert.AreEqual(1, vm.Reminders.Count);
             Assert.AreEqual("testd", vm.Reminders[0].Description);
-            Assert.AreEqual(6, vm.Reminders[0].DayOfWeek);
+            Assert.AreEqual(6, vm.Reminders[0].DayOfWeekList[0]);
             Assert.AreEqual(18, vm.Reminders[0].TimeList[0].Hour);
             Assert.AreEqual(56, vm.Reminders[0].TimeList[0].Minute);
         }
@@ -48,7 +61,9 @@ namespace DXReminder.Classes {
             //arrange
             BaseViewModel vm = new BaseViewModel();
             vm.Reminders = new ObservableCollection<Reminder>();
-            vm.UIDayOfWeek = 6;
+            var dList = new List<int>();
+            dList.Add(6);
+            vm.UIDayOfWeekList = dList;
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 18, 56, 0));
             vm.UITimeList = tList;
@@ -58,16 +73,19 @@ namespace DXReminder.Classes {
             Assert.AreEqual(0, vm.Reminders.Count);
         }
         [Test]
-        public void ReminderStore_ToString() {
+        public void Reminder_ToString() {
             //arrange
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 15, 15, 0));
             tList.Add(new DateTime(1, 1, 1, 5, 0, 0));
-            Reminder r = new Reminder("test", 1,tList );
+            var dList = new List<int>();
+            dList.Add(1);
+            dList.Add(6);
+            Reminder r = new Reminder("test", dList,tList );
             //act
             string st = r.ToString();
             //assert
-            Assert.AreEqual("test - Monday - 15:15, 05:00", st);
+            Assert.AreEqual("test - Monday, Saturday - 15:15, 05:00", st);
         }
 
         [Test]
@@ -76,14 +94,23 @@ namespace DXReminder.Classes {
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 14, 15, 0));
             tList.Add(new DateTime(1, 1, 1, 9, 1, 0));
-            Reminder r = new Reminder("test", 3,tList);
+            var dList = new List<int>();
+            dList.Add(3);
+            dList.Add(5);
+            Reminder r = new Reminder("test", dList,tList);
             XElement xlB = new XElement("Reminder");
             xlB.Add(new XAttribute("Description", "test"));
+
             XElement xlTm = new XElement("TimeList");
             xlTm.Add(new XElement("Time", "14:15"));
             xlTm.Add(new XElement("Time", "09:01"));
             xlB.Add(xlTm);
-            xlB.Add(new XAttribute("DayOfWeek", "3"));
+
+            XElement xlDm = new XElement("DayOfWeekList");
+            xlDm.Add(new XElement("DayOfWeek", "3"));
+            xlDm.Add(new XElement("DayOfWeek", "5"));
+
+            xlB.Add(xlDm);
             //act
             XElement xl = r.GetXML();
             var b = XElement.DeepEquals(xl, xlB);
@@ -97,30 +124,44 @@ namespace DXReminder.Classes {
             var tList1 = new List<DateTime>();
             tList1.Add(new DateTime(1, 1, 1, 11, 11, 0));
             tList1.Add(new DateTime(1, 1, 1, 8, 7, 0));
-            Reminder r1 = new Reminder("rem1", 1,tList1 );
+            var dList1 = new List<int>();
+            dList1.Add(1);
+            dList1.Add(5);
+            Reminder r1 = new Reminder("rem1", dList1,tList1 );
             var tList2 = new List<DateTime>();
             tList2.Add(new DateTime(1, 1, 1, 9, 9, 0));
             tList2.Add(new DateTime(1, 1, 1, 23, 59, 0));
-            Reminder r2 = new Reminder("rem2", 2,tList2 );
+            var dList2 = new List<int>();
+            dList2.Add(2);
+            dList2.Add(6);
+            Reminder r2 = new Reminder("rem2", dList2,tList2 );
             ObservableCollection<Reminder> col = new ObservableCollection<Reminder>();
             col.Add(r1);
             col.Add(r2);
 
             XElement xlBase = new XElement("Reminders");
+
             XElement xl1 = new XElement("Reminder");
             xl1.Add(new XAttribute("Description", "rem1"));
             XElement xl1Time = new XElement("TimeList");
             xl1Time.Add(new XElement("Time", "11:11"));
             xl1Time.Add(new XElement("Time", "08:07"));
             xl1.Add(xl1Time);
-            xl1.Add(new XAttribute("DayOfWeek", "1"));
+            XElement xl1Day = new XElement("DayOfWeekList");
+            xl1Day.Add(new XElement("DayOfWeek", "1"));
+            xl1Day.Add(new XElement("DayOfWeek", "5"));
+            xl1.Add(xl1Day);
+
             XElement xl2 = new XElement("Reminder");
             xl2.Add(new XAttribute("Description", "rem2"));
             XElement xl2Time = new XElement("TimeList");
             xl2Time.Add(new XElement("Time", "09:09"));
             xl2Time.Add(new XElement("Time", "23:59"));
             xl2.Add(xl2Time);
-            xl2.Add(new XAttribute("DayOfWeek", "2"));
+            XElement xl2Day = new XElement("DayOfWeekList");
+            xl2Day.Add(new XElement("DayOfWeek", "2"));
+            xl2Day.Add(new XElement("DayOfWeek", "6"));
+            xl2.Add(xl2Day);
             xlBase.Add(xl1);
             xlBase.Add(xl2);
             ReminderSerializer r = new ReminderSerializer();
@@ -142,13 +183,21 @@ namespace DXReminder.Classes {
             XElement xl1Time = new XElement("TimeList");
             xl1Time.Add(new XElement("Time", "11:11"));
             xl1.Add(xl1Time);
-            xl1.Add(new XAttribute("DayOfWeek", "1"));
+            XElement xl1Day = new XElement("DayOfWeekList");
+            xl1Day.Add(new XElement("DayOfWeek", "1"));
+            xl1Day.Add(new XElement("DayOfWeek", "4"));
+            xl1.Add(xl1Day);
+
             XElement xl2 = new XElement("Reminder");
             xl2.Add(new XAttribute("Description", "rem2"));
             XElement xl2Time = new XElement("TimeList");
             xl2Time.Add(new XElement("Time", "09:09"));
             xl2.Add(xl2Time);
-            xl2.Add(new XAttribute("DayOfWeek", "2"));
+            XElement xl2Day = new XElement("DayOfWeekList");
+            xl2Day.Add(new XElement("DayOfWeek", "2"));
+            xl2Day.Add(new XElement("DayOfWeek", "3"));
+            xl2.Add(xl2Day);
+
             xlBase.Add(xl1);
             xlBase.Add(xl2);
 
@@ -160,31 +209,41 @@ namespace DXReminder.Classes {
             Assert.AreEqual("rem1", col[0].Description);
             Assert.AreEqual(new DateTime(1,1,1,11,11,0).Hour, col[0].TimeList[0].Hour);
             Assert.AreEqual(new DateTime(1, 1, 1, 11, 11, 0).Minute, col[0].TimeList[0].Minute);
-            Assert.AreEqual(1, col[0].DayOfWeek);
+            Assert.AreEqual(2, col[0].DayOfWeekList.Count);
+            Assert.AreEqual(1, col[0].DayOfWeekList[0]);
+            Assert.AreEqual(4, col[0].DayOfWeekList[1]);
             Assert.AreEqual("rem2", col[1].Description);
             Assert.AreEqual(new DateTime(1, 1, 1, 9, 9, 0).Hour, col[1].TimeList[0].Hour);
             Assert.AreEqual(new DateTime(1, 1, 1, 9, 9, 0).Minute, col[1].TimeList[0].Minute);
-            Assert.AreEqual(2, col[1].DayOfWeek);
+            Assert.AreEqual(2, col[1].DayOfWeekList.Count);
+            Assert.AreEqual(2, col[1].DayOfWeekList[0]);
+            Assert.AreEqual(3, col[1].DayOfWeekList[1]);
         }
         [Test]
         public void Reminder_XMLConstructor() {
             //arrange
-            XElement xl2 = new XElement("Reminder");
-            xl2.Add(new XAttribute("Description", "rem2"));
+            XElement xlBase = new XElement("Reminder");
+            xlBase.Add(new XAttribute("Description", "rem2"));
             XElement xlTm = new XElement("TimeList");
             xlTm.Add(new XElement("Time", "14:15"));
             xlTm.Add(new XElement("Time", "09:01"));
-            xl2.Add(xlTm);
-            xl2.Add(new XAttribute("DayOfWeek", "2"));
+            xlBase.Add(xlTm);
+
+            XElement xlDm = new XElement("DayOfWeekList");
+            xlDm.Add(new XElement("DayOfWeek", "2"));
+            xlDm.Add(new XElement("DayOfWeek", "6"));
+            xlBase.Add(xlDm);
             //act
-            Reminder r = new Reminder(xl2);
+            Reminder r = new Reminder(xlBase);
             //assert
             Assert.AreEqual("rem2", r.Description);
             Assert.AreEqual(new DateTime(1, 1, 1, 14, 15, 0).Hour, r.TimeList[0].Hour);
             Assert.AreEqual(new DateTime(1, 1, 1, 14, 15, 0).Minute, r.TimeList[0].Minute);
             Assert.AreEqual(new DateTime(1, 1, 1, 9, 1, 0).Hour, r.TimeList[1].Hour);
             Assert.AreEqual(new DateTime(1, 1, 1, 9, 1, 0).Minute, r.TimeList[1].Minute);
-            Assert.AreEqual(2, r.DayOfWeek);
+            Assert.AreEqual(2, r.DayOfWeekList.Count);
+            Assert.AreEqual(2, r.DayOfWeekList[0]);
+            Assert.AreEqual(6, r.DayOfWeekList[1]);
         }
 
         [Test]
@@ -192,9 +251,11 @@ namespace DXReminder.Classes {
             //arrange
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 15, 29, 1));
-            Reminder r = new Reminder("test", 1, tList);
+            var dList = new List<int>();
+            dList.Add(1);
+            Reminder r = new Reminder("test", dList, tList);
             //act
-            string st = r.Test_TimesToString();
+            string st = r.Test_TimeListToString();
             //assert
             Assert.AreEqual("15:29", st);
         }
@@ -204,11 +265,45 @@ namespace DXReminder.Classes {
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 15, 29, 1));
             tList.Add(new DateTime(1, 1, 1, 9, 5, 1));
-            Reminder r = new Reminder("test", 1, tList);
+            var dList = new List<int>();
+            dList.Add(1);
+            Reminder r = new Reminder("test", dList, tList);
             //act
-            string st = r.Test_TimesToString();
+            string st = r.Test_TimeListToString();
             //assert
             Assert.AreEqual("15:29, 09:05", st);
+        }
+        [Test]
+        public void Reminder_GetDayNameFromInt() {
+            //arrange
+            Reminder r = new Reminder(null,null,null);
+            //act
+            string st = r.Test_GetDayNameFromInt(3);
+            //Assert
+            Assert.AreEqual("Wednesday", st);
+        }
+        [Test]
+        public void Reminder_DayOfWeekListToString_1() {
+            //arrange
+            var dList = new List<int>();
+            dList.Add(1);
+            Reminder r = new Reminder(null, dList, null);
+            //act
+            string st = r.Test_DayOfWeekListToString();
+            //assert
+            Assert.AreEqual("Monday", st);
+        }
+        [Test]
+        public void Reminder_DayOfWeekListToString_2() {
+            //arrange
+            var dList = new List<int>();
+            dList.Add(1);
+            dList.Add(4);
+            Reminder r = new Reminder(null, dList, null);
+            //act
+            string st = r.Test_DayOfWeekListToString();
+            //assert
+            Assert.AreEqual("Monday, Thursday", st);
         }
     }
 }

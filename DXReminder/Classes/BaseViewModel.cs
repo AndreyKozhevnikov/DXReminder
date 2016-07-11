@@ -17,7 +17,7 @@ namespace DXReminder.Classes {
         ICommand _addNewReminderCommand;
         ReminderSerializer serializer;
         public string UIDescription { get; set; }
-        public int UIDayOfWeek { get; set; }
+        public List<int> UIDayOfWeekList { get; set; }
         public List<DateTime> UITimeList { get; set; }
 
         public ICommand AddNewReminderCommand {
@@ -32,7 +32,7 @@ namespace DXReminder.Classes {
             if (string.IsNullOrEmpty(UIDescription)) {
                 return;
             }
-            Reminder r = new Reminder(UIDescription, UIDayOfWeek, UITimeList);
+            Reminder r = new Reminder(UIDescription, UIDayOfWeekList, UITimeList);
             Reminders.Add(r);
         }
 
