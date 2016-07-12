@@ -13,7 +13,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding EditValue,ElementName=TControl}">
+        <ListBox ItemsSource="{Binding EditValue,ElementName=TControl}" x:Name="lstTimes">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding .,StringFormat=HH:mm}"/>
@@ -27,6 +27,7 @@
                 </dxe:DateEdit.StyleSettings>
             </dxe:DateEdit>
             <Button Content="Add" Click="Button_Click"/>
+            <Button Content="delete" Click="Button_Click_1"/>
         </StackPanel>
     </Grid>
 </UserControl>

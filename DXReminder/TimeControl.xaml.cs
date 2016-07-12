@@ -57,5 +57,10 @@ namespace DXReminder {
             EditValue = null;
             EditValue = v;
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e) {
+            EditValue.Remove(lstTimes.SelectedItem);
+            UpdateListBox();
+        }
     }
 }
