@@ -11,7 +11,6 @@ namespace DXReminder.Classes {
     public class BaseViewModel {
         public BaseViewModel() {
             serializer = new ReminderSerializer();
-
         }
         public ObservableCollection<Reminder> Reminders { get; set; }
         ICommand _addNewReminderCommand;
@@ -29,10 +28,10 @@ namespace DXReminder.Classes {
         }
 
         private void AddNewReminder() {
-            if (string.IsNullOrEmpty(UIDescription)||UIDayOfWeekList==null || UITimeList==null) {
+            if (string.IsNullOrEmpty(UIDescription)||UIDayOfWeekList==null || UITimeList==null || UIDayOfWeekList.Count==0 || UITimeList.Count==0) {
                 return;
             }
-            Reminder r = new Reminder(UIDescription, UIDayOfWeekList, UITimeList);
+            Reminder r = new Reminder(UIDescription, UIDayOfWeekList,  UITimeList);
             Reminders.Add(r);
         }
 

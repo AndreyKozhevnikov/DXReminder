@@ -35,7 +35,7 @@
                                 <dxe:DateEditPickerStyleSettings/>
                             </dxe:DateEdit.StyleSettings>
                         </dxe:DateEdit>-->
-                        <local:TimeControl EditValue="{Binding UITimeList,Mode=TwoWay}"/>
+                        <local:TimeControl EditValue="{Binding UITimeList,Mode=TwoWay,Converter={local:TimeListConverter}}"/>
                     </dxlc:LayoutItem>
                     <Button Content="Add" Command="{Binding AddNewReminderCommand}"/>
                     <Button Content="temp add" Click="Button_Click_1"/>

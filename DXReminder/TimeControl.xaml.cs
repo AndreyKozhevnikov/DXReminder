@@ -23,28 +23,29 @@ namespace DXReminder {
     public partial class TimeControl : UserControl {
         public TimeControl() {
             InitializeComponent();
-            this.Loaded += TimeControl_Loaded;
-          
+            this.Loaded+=TimeControl_Loaded;
         }
 
         void TimeControl_Loaded(object sender, RoutedEventArgs e) {
-            EditValue = new List<DateTime>();
+            EditValue = new List<object>();
         }
 
 
 
-        public List<DateTime> EditValue {
-            get { return (List<DateTime>)GetValue(EditValueProperty); }
+        public List<object> EditValue {
+            get { return (List<object>)GetValue(EditValueProperty); }
             set { SetValue(EditValueProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for EditValue.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EditValueProperty =
-            DependencyProperty.Register("EditValue", typeof(List<DateTime>), typeof(TimeControl), new PropertyMetadata(null));
+            DependencyProperty.Register("EditValue", typeof(List<object>), typeof(TimeControl), new PropertyMetadata(new List<object>()));
 
-        
+   
 
-        
+
+
+
         public DateTime SingleTime { get; set; }
         private void Button_Click(object sender, RoutedEventArgs e) {
             EditValue.Add(SingleTime);

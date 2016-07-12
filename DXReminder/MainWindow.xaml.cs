@@ -1,6 +1,7 @@
 ﻿using DXReminder.Classes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,8 +38,13 @@ namespace DXReminder {
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {
-            RemindProcessor proc = new RemindProcessor(null);
-            proc.Start();
+            List<DateTime> newList = new List<DateTime>();
+            newList.Add(new DateTime(1, 1, 1, 16, 1, 1));
+            Reminder r = new Reminder("test", null, newList);
+            Debug.Print(r.TimeList.Count.ToString());
+
+            newList.Add(new DateTime(1, 1, 1, 4, 4, 1));
+            Debug.Print(r.TimeList.Count.ToString());
         }
     }
 }

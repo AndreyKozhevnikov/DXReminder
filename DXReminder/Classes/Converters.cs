@@ -18,14 +18,29 @@ namespace DXReminder
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             var lstIn = value as List<object>;
-
+            if (lstIn == null)
+                return null;
             return lstIn.Cast<int>().ToList();
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider) {
             return this;
         }
+    }
+    public class TimeListConverter : MarkupExtension, IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return value;
+        }
 
-    
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            var lstIn = value as List<object>;
+            if (lstIn == null)
+                return null;
+            return lstIn.Cast<DateTime>().ToList();
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider) {
+            return this;
+        }
     }
 }
