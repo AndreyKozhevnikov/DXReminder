@@ -6,6 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
+using DevExpress.Xpf.Core.Native;
+using DevExpress.Mvvm.UI;
+using System.Windows;
+using DevExpress.Xpf.Editors;
+using System.Windows.Data;
 
 namespace DXReminder.Classes {
     [TestFixture]
@@ -21,7 +26,7 @@ namespace DXReminder.Classes {
             dList.Add(4);
             dList.Add(1);
             dList.Add(2);
-            var r = new Reminder("testdescrption", dList, tList );
+            var r = new Reminder("testdescrption", dList, tList);
             //assert
             Assert.AreEqual("testdescrption", r.Description);
             Assert.AreEqual(3, r.DayOfWeekList.Count);
@@ -79,7 +84,7 @@ namespace DXReminder.Classes {
             vm.UIDescription = "test";
 
             vm.Reminders = new ObservableCollection<Reminder>();
-        
+
 
             var tList = new List<DateTime>();
             tList.Add(new DateTime(1, 1, 1, 18, 56, 0));
@@ -99,7 +104,7 @@ namespace DXReminder.Classes {
             var dList = new List<int>();
             dList.Add(6);
             vm.UIDayOfWeekList = dList;
-          
+
             //act
             vm.AddNewReminderCommand.Execute(null);
             //assert
@@ -114,7 +119,7 @@ namespace DXReminder.Classes {
             var dList = new List<int>();
             dList.Add(1);
             dList.Add(6);
-            Reminder r = new Reminder("test", dList,tList );
+            Reminder r = new Reminder("test", dList, tList);
             //act
             string st = r.ToString();
             //assert
@@ -130,7 +135,7 @@ namespace DXReminder.Classes {
             var dList = new List<int>();
             dList.Add(3);
             dList.Add(5);
-            Reminder r = new Reminder("test", dList,tList);
+            Reminder r = new Reminder("test", dList, tList);
             XElement xlB = new XElement("Reminder");
             xlB.Add(new XAttribute("Description", "test"));
 
@@ -160,14 +165,14 @@ namespace DXReminder.Classes {
             var dList1 = new List<int>();
             dList1.Add(1);
             dList1.Add(5);
-            Reminder r1 = new Reminder("rem1", dList1,tList1 );
+            Reminder r1 = new Reminder("rem1", dList1, tList1);
             var tList2 = new List<DateTime>();
             tList2.Add(new DateTime(1, 1, 1, 9, 9, 0));
             tList2.Add(new DateTime(1, 1, 1, 23, 59, 0));
             var dList2 = new List<int>();
             dList2.Add(2);
             dList2.Add(6);
-            Reminder r2 = new Reminder("rem2", dList2,tList2 );
+            Reminder r2 = new Reminder("rem2", dList2, tList2);
             ObservableCollection<Reminder> col = new ObservableCollection<Reminder>();
             col.Add(r1);
             col.Add(r2);
@@ -240,7 +245,7 @@ namespace DXReminder.Classes {
             //assert
             Assert.AreEqual(2, col.Count);
             Assert.AreEqual("rem1", col[0].Description);
-            Assert.AreEqual(new DateTime(1,1,1,11,11,0).Hour, col[0].TimeList[0].Hour);
+            Assert.AreEqual(new DateTime(1, 1, 1, 11, 11, 0).Hour, col[0].TimeList[0].Hour);
             Assert.AreEqual(new DateTime(1, 1, 1, 11, 11, 0).Minute, col[0].TimeList[0].Minute);
             Assert.AreEqual(2, col[0].DayOfWeekList.Count);
             Assert.AreEqual(1, col[0].DayOfWeekList[0]);
@@ -309,7 +314,7 @@ namespace DXReminder.Classes {
         [Test]
         public void Reminder_GetDayNameFromInt() {
             //arrange
-            Reminder r = new Reminder(null,null,null);
+            Reminder r = new Reminder(null, null, null);
             //act
             string st = r.Test_GetDayNameFromInt(3);
             //Assert
@@ -339,4 +344,34 @@ namespace DXReminder.Classes {
             Assert.AreEqual("Monday, Thursday", st);
         }
     }
+
+    [TestFixture]
+    public class TimeControl_Test {
+        public class SimpleViewModel {
+            public List<DateTime> TimeList { get; set; }
+        }
+        [Test]
+        public void TimeControl_AddValue() {
+            //arrange
+            SimpleViewModel vm = new SimpleViewModel();
+            vm.TimeList = new List<DateTime>();
+            TimeControl tc = new TimeControl();
+            tc.SingleTime = new DateTime(1, 1, 1, 1, 1, 1);
+            Binding b = new Binding("TimeList");
+            b.Mode = BindingMode.TwoWay;
+            b.Converter = new TimeListConverter();
+            tc.SetBinding(TimeControl.EditValueProperty, b);
+            Window w = new Window();
+            w.DataContext = vm;
+            w.Content = tc;
+            w.Show();
+            //act
+            tc.Test_Button_Click();
+            //assert
+            Assert.AreEqual(1, vm.TimeList.Count);
+
+        }
+
+    }
+
 }

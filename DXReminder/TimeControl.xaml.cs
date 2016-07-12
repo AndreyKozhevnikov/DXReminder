@@ -62,5 +62,11 @@ namespace DXReminder {
             EditValue.Remove(lstTimes.SelectedItem);
             UpdateListBox();
         }
+
+        #region Test
+        public void Test_Button_Click() {
+            Button_Click(null, null);
+        }
+        #endregion
     }
 }
