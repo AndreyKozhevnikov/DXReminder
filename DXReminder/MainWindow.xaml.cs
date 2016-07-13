@@ -38,13 +38,7 @@ namespace DXReminder {
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {
-            List<DateTime> newList = new List<DateTime>();
-            newList.Add(new DateTime(1, 1, 1, 16, 1, 1));
-            Reminder r = new Reminder("test", null, newList);
-            Debug.Print(r.TimeList.Count.ToString());
-
-            newList.Add(new DateTime(1, 1, 1, 4, 4, 1));
-            Debug.Print(r.TimeList.Count.ToString());
+            vm.Test_Proccessor.Test_ShowNotification(new Reminder("newrem",null,null));
         }
     }
 }

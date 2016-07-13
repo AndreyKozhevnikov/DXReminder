@@ -38,6 +38,7 @@
                         <local:TimeControl EditValue="{Binding UITimeList,Mode=TwoWay,Converter={local:TimeListConverter}}"/>
                     </dxlc:LayoutItem>
                     <Button Content="Add" Command="{Binding AddNewReminderCommand}"/>
+                    <Button Content="Start" Command="{Binding StartProcessCommand}"/>
                     <Button Content="temp add" Click="Button_Click_1"/>
                     <Button Content="serialize" Click="Button_Click"/>
                     <Button Content="test" Click="Button_Click_2"/>

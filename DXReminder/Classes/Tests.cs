@@ -11,6 +11,8 @@ using DevExpress.Mvvm.UI;
 using System.Windows;
 using DevExpress.Xpf.Editors;
 using System.Windows.Data;
+using DevExpress.Mvvm.UI.Native;
+using System.Windows.Controls;
 
 namespace DXReminder.Classes {
     [TestFixture]
@@ -210,10 +212,8 @@ namespace DXReminder.Classes {
             Reminder r = new Reminder(xlBase);
             //assert
             Assert.AreEqual("rem2", r.Description);
-            Assert.AreEqual(new DateTime(1, 1, 1, 14, 15, 0).Hour, r.TimeList[0].Hour);
-            Assert.AreEqual(new DateTime(1, 1, 1, 14, 15, 0).Minute, r.TimeList[0].Minute);
-            Assert.AreEqual(new DateTime(1, 1, 1, 9, 1, 0).Hour, r.TimeList[1].Hour);
-            Assert.AreEqual(new DateTime(1, 1, 1, 9, 1, 0).Minute, r.TimeList[1].Minute);
+            Assert.AreEqual(new DateTime(1, 1, 1, 14, 15, 0), r.TimeList[0]);
+            Assert.AreEqual(new DateTime(1, 1, 1, 9, 1, 0), r.TimeList[1]);
             Assert.AreEqual(2, r.DayOfWeekList.Count);
             Assert.AreEqual(2, r.DayOfWeekList[0]);
             Assert.AreEqual(6, r.DayOfWeekList[1]);
@@ -278,6 +278,8 @@ namespace DXReminder.Classes {
             //assert
             Assert.AreEqual("Monday, Thursday", st);
         }
+
+
     }
 
     [TestFixture]
@@ -352,20 +354,14 @@ namespace DXReminder.Classes {
             //assert
             Assert.AreEqual(0, vm.Reminders.Count);
         }
-    
-   
-     
-        
+
+
+
+
     }
     [TestFixture]
     public class RemindProcessor_Test {
-        [Test]
-        public void CurrentMinuteReminders_IsNotNull() {
-           //arrange
-            RemindProcessor r = new RemindProcessor(null);
-            //assert
-            Assert.AreNotEqual(null, r.Test_CurrentMinuteReminders);
-        }
+
         [Test]
         public void Test_GetTimeIdFromTime() {
             //arrange
@@ -373,19 +369,9 @@ namespace DXReminder.Classes {
             //act
             string st = p.Test_GetTimeIdFromTime(new DateTime(2016, 7, 12, 15, 59, 34));
             //assert
-            Assert.AreEqual("2-15-59",st);
+            Assert.AreEqual("2-15-59", st);
         }
-        [Test]
-        public void Test_ChangeCurrentTimeIdIfRequired() {
-            //arrange
-            RemindProcessor p = new RemindProcessor(null);
-            p.Test_currentItemId = "testid";
-            p.Test_CurrentMinuteReminders.Add(new Reminder(null, null, null));
-            //act
-            p.Test_ChangeCurrentTimeIdIfRequired();
-            //assert
-            Assert.AreEqual(0, p.Test_CurrentMinuteReminders.Count);
-        }
+
         [Test]
         public void Test_GetAllRemindersForTime() {
             //arrange
@@ -397,7 +383,7 @@ namespace DXReminder.Classes {
             lReminders.Add(r2);
             lReminders.Add(r3);
             RemindProcessor p = new RemindProcessor(lReminders);
-            DateTime dt = new DateTime(2016, 7, 12,15,15,45);
+            DateTime dt = new DateTime(2016, 7, 12, 15, 15, 45);
             //act
             var lst = p.Test_GetAllRemindersForTime(dt);
             //assert
@@ -407,6 +393,32 @@ namespace DXReminder.Classes {
             Assert.AreEqual(3, lst[1].DayOfWeekList[0]);
             Assert.AreEqual(2, lst[1].DayOfWeekList[1]);
 
+        }
+        [Test]
+        public void ShowNotification() {
+            //arrange
+            Reminder r = new Reminder("testReminder", null, null);
+            RemindProcessor proc = new RemindProcessor(null);
+            new App();
+            //act
+            proc.Test_ShowNotification(r);
+            var tw = App.Current.Windows[0] as ToastWindow;
+            Label lb = LayoutTreeHelper.GetVisualChildren(tw).OfType<Label>().First() as Label;
+            //assert
+            Assert.AreEqual("testReminder", lb.Content);
+        }
+        [Test]
+        public void ShowSeveralNotifications() {
+            //arrange
+            Reminder r = new Reminder("testReminder", null, null);
+            RemindProcessor proc = new RemindProcessor(null);
+            new App();
+            //act
+            proc.Test_ShowNotification(r);
+            var tw = App.Current.Windows[0] as ToastWindow;
+            Label lb = LayoutTreeHelper.GetVisualChildren(tw).OfType<Label>().First() as Label;
+            //assert
+            Assert.AreEqual("testReminder", lb.Content);
         }
     }
 

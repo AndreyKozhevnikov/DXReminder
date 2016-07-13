@@ -26,7 +26,8 @@ namespace DXReminder.Classes {
             TimeList = new List<DateTime>();
             foreach(XElement x in tmpTimeList) {
                 DateTime dt = DateTime.Parse(x.Value);
-                TimeList.Add(dt);
+                DateTime dt1 = new DateTime(1, 1, 1, dt.Hour, dt.Minute, 0);
+                TimeList.Add(dt1);
             }
             var tmpDayOfWeekList = xl.Element("DayOfWeekList").Elements();
             DayOfWeekList = new List<int>();

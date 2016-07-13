@@ -14,6 +14,7 @@ namespace DXReminder.Classes {
         }
         public ObservableCollection<Reminder> Reminders { get; set; }
         ICommand _addNewReminderCommand;
+        ICommand _startProcessCommand;
         ReminderSerializer serializer;
         public string UIDescription { get; set; }
         public List<int> UIDayOfWeekList { get; set; }
@@ -25,6 +26,19 @@ namespace DXReminder.Classes {
                     _addNewReminderCommand = new DelegateCommand(AddNewReminder);
                 return _addNewReminderCommand;
             }
+        }
+        public ICommand StartProcessCommand {
+            get {
+                if (_startProcessCommand == null)
+                    _startProcessCommand = new DelegateCommand(StartProcess);
+                return _startProcessCommand;
+            }
+        }
+        RemindProcessor processor;
+        private void StartProcess() {
+            processor = new RemindProcessor(Reminders.ToList());
+            processor.Start();
+
         }
 
         private void AddNewReminder() {
@@ -63,6 +77,13 @@ namespace DXReminder.Classes {
         public ReminderSerializer Test_Serializer {
             get { return serializer; }
         }
+
+        public RemindProcessor Test_Proccessor {
+            get {
+                return this.processor;
+            }
+        }
+     
 
         #endregion
     }
