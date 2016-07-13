@@ -13,6 +13,7 @@ using DevExpress.Xpf.Editors;
 using System.Windows.Data;
 using DevExpress.Mvvm.UI.Native;
 using System.Windows.Controls;
+using System.Threading;
 
 namespace DXReminder.Classes {
     [TestFixture]
@@ -399,7 +400,8 @@ namespace DXReminder.Classes {
             //arrange
             Reminder r = new Reminder("testReminder", null, null);
             RemindProcessor proc = new RemindProcessor(null);
-            new App();
+            if (Application.Current == null)
+                new App();
             //act
             proc.Test_ShowNotification(r);
             var tw = App.Current.Windows[0] as ToastWindow;
@@ -410,15 +412,38 @@ namespace DXReminder.Classes {
         [Test]
         public void ShowSeveralNotifications() {
             //arrange
-            Reminder r = new Reminder("testReminder", null, null);
-            RemindProcessor proc = new RemindProcessor(null);
-            new App();
+            var lDay1 = new List<int>();
+            lDay1.Add(3);
+            lDay1.Add(1);
+            var lTime1 = new List<DateTime>();
+            lTime1.Add(new DateTime(1, 1, 1, 12, 22, 0));
+            lTime1.Add(new DateTime(1, 1, 1, 20, 59, 0));
+            Reminder r1 = new Reminder("testReminder1", lDay1, lTime1);
+
+            var lDay2 = new List<int>();
+            lDay2.Add(3);
+            lDay2.Add(6);
+            var lTime2 = new List<DateTime>();
+            lTime2.Add(new DateTime(1, 1, 1, 12, 22, 0));
+            lTime2.Add(new DateTime(1, 1, 1, 1, 1, 0));
+            Reminder r2 = new Reminder("testReminder2", lDay2, lTime2);
+
+            var rList = new List<Reminder>();
+            rList.Add(r1);
+            rList.Add(r2);
+            RemindProcessor proc = new RemindProcessor(rList);
+            if(Application.Current==null)
+              new App();
             //act
-            proc.Test_ShowNotification(r);
-            var tw = App.Current.Windows[0] as ToastWindow;
-            Label lb = LayoutTreeHelper.GetVisualChildren(tw).OfType<Label>().First() as Label;
+            proc.Test_ProccessTime(new DateTime(2016, 7, 13, 12, 22, 15));
+            Thread.Sleep(500);
+            var tw1 = App.Current.Windows[0] as ToastWindow;
+            var tw2 = App.Current.Windows[1] as ToastWindow;
+            Label lb1 = LayoutTreeHelper.GetVisualChildren(tw1).OfType<Label>().First() as Label;
+            Label lb2 = LayoutTreeHelper.GetVisualChildren(tw2).OfType<Label>().First() as Label;
             //assert
-            Assert.AreEqual("testReminder", lb.Content);
+            Assert.AreEqual("testReminder1", lb1.Content);
+            Assert.AreEqual("testReminder2", lb2.Content);
         }
     }
 

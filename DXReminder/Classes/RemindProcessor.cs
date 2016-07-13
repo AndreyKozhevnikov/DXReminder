@@ -29,16 +29,18 @@ namespace DXReminder.Classes {
         }
         string currentItemId;
         void OnTimer(object sender, EventArgs e) {
-            string st = GetTimeIdFromTime(DateTime.Now);
+            ProccessTime(DateTime.Now);
+        }
+
+        private void ProccessTime(DateTime dt) {
+            string st = GetTimeIdFromTime(dt);
             if (currentItemId != st) {
                 currentItemId = st;
-                var list = GetRemindersForTime(DateTime.Now);
+                var list = GetRemindersForTime(dt);
                 foreach (Reminder r in list) {
                     ShowNotification(r);
                 }
             }
-           
-
         }
 
         private void ShowNotification(Reminder r) {
@@ -113,6 +115,9 @@ namespace DXReminder.Classes {
         }
      public void Test_ShowNotification(Reminder r) {
             this.ShowNotification(r);
+        }
+        public void Test_ProccessTime(DateTime dt) {
+            ProccessTime(dt);
         }
         #endregion
     }
