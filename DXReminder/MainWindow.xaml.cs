@@ -107,7 +107,7 @@ namespace DXReminder {
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {
             // vm.Test_Proccessor.Test_ShowNotification(new Reminder("newrem",null,null));
-            vm.Test_Proccessor.Test_ProccessTime(new DateTime(2016, 7, 13, 15, 7, 1));
+            vm.Processor.Test_ProccessTime(new DateTime(2016, 7, 13, 15, 7, 1));
         }
    
     }

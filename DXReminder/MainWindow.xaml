@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:local="clr-namespace:DXReminder"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -13,6 +14,8 @@
     Height="450"
     ShowInTaskbar="False"
     mc:Ignorable="d">
+    <dx:DXTabControl>
+        <dx:DXTabItem Header="View">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -45,11 +48,22 @@
                     </dxlc:LayoutItem>
                     <Button Command="{Binding AddNewReminderCommand}" Content="Add" />
                     <Button Command="{Binding StartProcessCommand}" Content="Start" />
+                    <Button Command="{Binding SerializeCommand}" Content="serialize" />
                     <Button Click="Button_Click_1" Content="temp add" />
-                    <Button Click="Button_Click" Content="serialize" />
                     <Button Click="Button_Click_2" Content="test" />
                 </dxlc:LayoutGroup>
             </dxlc:LayoutControl>
         </Grid>
     </Grid>
+        </dx:DXTabItem>
+        <dx:DXTabItem Header="Logs">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="9*"/>
+                </Grid.RowDefinitions>
+                <Label Content="{Binding Processor.CurrentTime}"/>
+            </Grid>
+        </dx:DXTabItem>
+    </dx:DXTabControl>
 </Window>

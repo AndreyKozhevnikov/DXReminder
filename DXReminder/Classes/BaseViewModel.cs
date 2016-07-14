@@ -15,6 +15,7 @@ namespace DXReminder.Classes {
         public ObservableCollection<Reminder> Reminders { get; set; }
         ICommand _addNewReminderCommand;
         ICommand _startProcessCommand;
+        ICommand _serializeCommand;
         ReminderSerializer serializer;
         public string UIDescription { get; set; }
         public List<int> UIDayOfWeekList { get; set; }
@@ -34,25 +35,31 @@ namespace DXReminder.Classes {
                 return _startProcessCommand;
             }
         }
-        RemindProcessor processor;
+        public ICommand SerializeCommand {
+            get {
+                if (_serializeCommand == null)
+                    _serializeCommand = new DelegateCommand(Serialize);
+                return _serializeCommand;
+            }
+        }
+        public RemindProcessor Processor { get; set; }
         private void StartProcess() {
-            processor = new RemindProcessor(Reminders.ToList());
-            processor.Start();
+            Processor = new RemindProcessor(Reminders.ToList());
+            Processor.Start();
 
         }
 
         private void AddNewReminder() {
-            if (string.IsNullOrEmpty(UIDescription)||UIDayOfWeekList==null || UITimeList==null || UIDayOfWeekList.Count==0 || UITimeList.Count==0) {
+            if (string.IsNullOrEmpty(UIDescription) || UIDayOfWeekList == null || UITimeList == null || UIDayOfWeekList.Count == 0 || UITimeList.Count == 0) {
                 return;
             }
-            Reminder r = new Reminder(UIDescription, UIDayOfWeekList,  UITimeList);
+            Reminder r = new Reminder(UIDescription, UIDayOfWeekList, UITimeList);
             Reminders.Add(r);
         }
 
 
 
         void Serialize() {
-
             serializer.Serialize(Reminders);
         }
 
@@ -68,8 +75,8 @@ namespace DXReminder.Classes {
 
 
         public void Temp_CreateReminder() {
-          //  Reminders.Add(new Reminder("test", 1, new DateTime(1, 1, 1, 23, 23, 0)));
-          //  Reminders.Add(new Reminder("test2", 1, new DateTime(1, 1, 1, 11, 24, 0)));
+            //  Reminders.Add(new Reminder("test", 1, new DateTime(1, 1, 1, 23, 23, 0)));
+            //  Reminders.Add(new Reminder("test2", 1, new DateTime(1, 1, 1, 11, 24, 0)));
         }
         #endregion
 
@@ -78,12 +85,10 @@ namespace DXReminder.Classes {
             get { return serializer; }
         }
 
-        public RemindProcessor Test_Proccessor {
-            get {
-                return this.processor;
-            }
-        }
-     
+    
+
+
+
 
         #endregion
     }

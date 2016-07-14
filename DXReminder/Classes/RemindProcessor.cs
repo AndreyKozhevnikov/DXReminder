@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,8 +15,29 @@ using System.Windows.Media;
 using System.Xml;
 
 namespace DXReminder.Classes {
-    public class RemindProcessor {
+    public class RemindProcessor:INotifyPropertyChanged {
         private List<Reminder> reminders;
+        string _currentTimeId;
+        string _currentTime;
+        public string CurrentTimeId {
+            get {
+                return _currentTimeId;
+            }
+            set {
+                _currentTimeId = value;
+                RaisePropertyChanged("CurrentTimeId");
+            }
+        }
+        public string CurrentTime {
+            get {
+                return _currentTime;
+            }
+
+            set {
+                _currentTime = value;
+                RaisePropertyChanged("CurrentTime");
+            }
+        }
         public RemindProcessor(List<Reminder> _reminders) {
             this.reminders = _reminders;
         }
@@ -27,57 +49,59 @@ namespace DXReminder.Classes {
             timer.Start();
 
         }
-        string currentItemId;
+      
         void OnTimer(object sender, EventArgs e) {
             ProccessTime(DateTime.Now);
+            CurrentTime = DateTime.Now.ToString();
         }
 
         private void ProccessTime(DateTime dt) {
             string st = GetTimeIdFromTime(dt);
-            if (currentItemId != st) {
-                currentItemId = st;
+            if (CurrentTimeId != st) {
+                CurrentTimeId = st;
                 var list = GetRemindersForTime(dt);
                 foreach (Reminder r in list) {
                     ShowNotification(r);
                 }
             }
+            
         }
 
         private void ShowNotification(Reminder r) {
             Debug.Print(r.Description);
             NotificationService serv = new NotificationService();
             string st = @" <DataTemplate  xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" > " +
-            "<Grid>"+
-                "<Grid.ColumnDefinitions>"+
-                    "<ColumnDefinition Width = \"Auto\" />"+
- 
-                   "  <ColumnDefinition/>"+
- 
-               "  </Grid.ColumnDefinitions>"+
- 
-                " <Border Background = \"Crimson\" CornerRadius = \"10,0,0,10\">"+
-    
-                       " <Image Source = \"Resources/excl.jpg\" Stretch = \"Fill\" Margin = \"10\"/>"+
-         
-                       "  </Border>"+
-         
-                        " <Border Grid.Column = \"1\" CornerRadius = \"0,10,10,0\" Background = \"Crimson\">"+
-              
-                                  "<Label Content = \"{Binding}\" FontSize = \"35\" FontWeight = \"Bold\" "+
-                           "Background=\"SandyBrown\" "+
-                                          "Margin = \"10,15,15,15\" "+
-                                          "VerticalAlignment = \"Stretch\" "+
-                                          "HorizontalAlignment = \"Stretch\" "+
-                           "/>"+
-                "</Border>"+
-            "</Grid>"+
+            "<Grid>" +
+                "<Grid.ColumnDefinitions>" +
+                    "<ColumnDefinition Width = \"Auto\" />" +
+
+                   "  <ColumnDefinition/>" +
+
+               "  </Grid.ColumnDefinitions>" +
+
+                " <Border Background = \"Crimson\" CornerRadius = \"10,0,0,10\">" +
+
+                       " <Image Source = \"Resources/excl.jpg\" Stretch = \"Fill\" Margin = \"10\"/>" +
+
+                       "  </Border>" +
+
+                        " <Border Grid.Column = \"1\" CornerRadius = \"0,10,10,0\" Background = \"Crimson\">" +
+
+                                  "<Label Content = \"{Binding}\" FontSize = \"35\" FontWeight = \"Bold\" " +
+                           "Background=\"SandyBrown\" " +
+                                          "Margin = \"10,15,15,15\" " +
+                                          "VerticalAlignment = \"Stretch\" " +
+                                          "HorizontalAlignment = \"Stretch\" " +
+                           "/>" +
+                "</Border>" +
+            "</Grid>" +
         "</DataTemplate> ";
-           
+
             StringReader sr = new StringReader(st);
             XmlReader xmlReader = XmlReader.Create(sr);
             DataTemplate dt = XamlReader.Load(xmlReader) as DataTemplate;
             serv.CustomNotificationTemplate = dt;
-         //   serv.CustomNotificationTemplate = (DataTemplate)Application.Current.Resources["CustomNotificationTemplate"];
+            //   serv.CustomNotificationTemplate = (DataTemplate)Application.Current.Resources["CustomNotificationTemplate"];
             serv.CustomNotificationDuration = new TimeSpan(12, 0, 0);
             serv.CustomNotificationVisibleMaxCount = 5;
             var not = serv.CreateCustomNotification(r.Description);
@@ -92,10 +116,15 @@ namespace DXReminder.Classes {
 
         private string GetTimeIdFromTime(DateTime dt) {
 
-            var st = string.Format("{0}-{1}-{2}",(int) dt.DayOfWeek, dt.Hour, dt.Minute);
+            var st = string.Format("{0}-{1}-{2}", (int)dt.DayOfWeek, dt.Hour, dt.Minute);
             return st;
         }
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void RaisePropertyChanged(String propertyName) {
+            if (PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
 
         #region
         public List<Reminder> Test_GetAllRemindersForTime(DateTime dt) {
@@ -103,17 +132,19 @@ namespace DXReminder.Classes {
         }
         public string Test_currentItemId {
             get {
-                return this.currentItemId;
+                return this.CurrentTimeId;
             }
             set {
-                this.currentItemId = value;
+                this.CurrentTimeId = value;
             }
         }
-     
-        public string Test_GetTimeIdFromTime( DateTime tm) {
+
+   
+
+        public string Test_GetTimeIdFromTime(DateTime tm) {
             return GetTimeIdFromTime(tm);
         }
-     public void Test_ShowNotification(Reminder r) {
+        public void Test_ShowNotification(Reminder r) {
             this.ShowNotification(r);
         }
         public void Test_ProccessTime(DateTime dt) {
