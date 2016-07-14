@@ -1,8 +1,14 @@
-﻿using DXReminder.Classes;
+﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.UI.Interactivity;
+using DevExpress.Xpf.Bars;
+using DevExpress.Xpf.Core;
+using DXReminder.Classes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,11 +33,68 @@ namespace DXReminder {
             DataContext = vm;
             this.Loaded += MainWindow_Loaded;
         }
-
+        NotifyIconService serv;
         private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
             this.Visibility = Visibility.Collapsed;
-        }
+             serv = new NotifyIconService();
+            IconBitmapDecoder ibd = new IconBitmapDecoder(
 
+               new Uri(@"pack://application:,,/Resources/warning.ico", UriKind.RelativeOrAbsolute),
+
+               BitmapCreateOptions.None,
+
+               BitmapCacheOption.Default);
+            var v = new System.Drawing.Icon(Application.GetResourceStream(new Uri(@"pack://application:,,/Resources/warning.ico")).Stream);
+            serv.Icon = v;
+            serv.LeftClickCommand = new DelegateCommand(OnLeftClick);
+
+            PopupMenu menu = new PopupMenu();
+            BarButtonItem item = new BarButtonItem() { Content = "Close application" };
+            item.ItemClick += item_ItemClick;
+            menu.Items.Add(item);
+            serv.ContextMenu = menu;
+
+            Type vs1 = typeof(AttachableObjectBase);
+            var v1 = vs1.GetField("associatedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            v1.SetValue(serv, new FrameworkElement());
+
+            Type vs = typeof(NotifyIconService);
+            MethodInfo fi = vs.GetMethod("OnMainWindowLoaded", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            fi.Invoke(serv, new object[2] { null, null });
+
+            MethodInfo setMenu = vs.GetMethod("SetActualContextMenu", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            setMenu.Invoke(serv, null);
+
+            serv.ThemeName = "MetropolisDark";
+
+
+
+
+            (serv as INotifyIconService).SetStatusIcon(v);
+        }
+        protected override void OnClosing(CancelEventArgs e) {
+            e.Cancel = shouldLive;
+            if (shouldLive) {
+                this.Visibility = Visibility.Collapsed;
+            }
+            else {
+                Type vs = typeof(NotifyIconService);
+                MethodInfo fi = vs.GetMethod("OnWindowClosing", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                fi.Invoke(serv, new object[2] { null, null });
+            }
+        }
+        void item_ItemClick(object sender, ItemClickEventArgs e) {
+            shouldLive = false;
+            this.Close();
+        }
+        bool shouldLive = true;
+        private void OnLeftClick() {
+
+            this.Visibility = Visibility.Visible;
+            this.WindowState = WindowState.Normal;
+            this.Topmost = true;
+            this.Topmost = false;
+        }
         BaseViewModel vm;
 
         private void Button_Click(object sender, RoutedEventArgs e) {
@@ -46,5 +109,6 @@ namespace DXReminder {
             // vm.Test_Proccessor.Test_ShowNotification(new Reminder("newrem",null,null));
             vm.Test_Proccessor.Test_ProccessTime(new DateTime(2016, 7, 13, 15, 7, 1));
         }
+   
     }
 }
