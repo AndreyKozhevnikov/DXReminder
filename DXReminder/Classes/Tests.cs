@@ -400,14 +400,20 @@ namespace DXReminder.Classes {
             //arrange
             Reminder r = new Reminder("testReminder", null, null);
             RemindProcessor proc = new RemindProcessor(null);
+            Application a = null;
             if (Application.Current == null)
-                new App();
+                a = new Application() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+
             //act
             proc.Test_ShowNotification(r);
             var tw = App.Current.Windows[0] as ToastWindow;
             Label lb = LayoutTreeHelper.GetVisualChildren(tw).OfType<Label>().First() as Label;
+            var cont = lb.Content;
+            tw.Close();
             //assert
-            Assert.AreEqual("testReminder", lb.Content);
+            Assert.AreEqual(0, App.Current.Windows.Count);
+            Assert.AreEqual("testReminder", cont);
+
         }
         [Test]
         public void ShowSeveralNotifications() {
@@ -432,18 +438,26 @@ namespace DXReminder.Classes {
             rList.Add(r1);
             rList.Add(r2);
             RemindProcessor proc = new RemindProcessor(rList);
-            if(Application.Current==null)
-              new App();
+            Application a = null;
+            if (Application.Current == null)
+                a = new Application() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+
             //act
             proc.Test_ProccessTime(new DateTime(2016, 7, 13, 12, 22, 15));
-            Thread.Sleep(500);
+            // Thread.Sleep(500);
+            Assert.AreEqual(2, Application.Current.Windows.Count);
             var tw1 = App.Current.Windows[0] as ToastWindow;
             var tw2 = App.Current.Windows[1] as ToastWindow;
             Label lb1 = LayoutTreeHelper.GetVisualChildren(tw1).OfType<Label>().First() as Label;
             Label lb2 = LayoutTreeHelper.GetVisualChildren(tw2).OfType<Label>().First() as Label;
+            var cont1 = lb1.Content;
+            var cont2 = lb2.Content;
+            tw1.Close();
+            tw2.Close();
             //assert
-            Assert.AreEqual("testReminder1", lb1.Content);
-            Assert.AreEqual("testReminder2", lb2.Content);
+            Assert.AreEqual(0, App.Current.Windows.Count);
+            Assert.AreEqual("testReminder1", cont1);
+            Assert.AreEqual("testReminder2", cont2);
         }
     }
 
