@@ -25,8 +25,13 @@ namespace DXReminder {
             vm = new BaseViewModel();
             vm.Deserialize();
             DataContext = vm;
-         
+            this.Loaded += MainWindow_Loaded;
         }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
+            this.Visibility = Visibility.Collapsed;
+        }
+
         BaseViewModel vm;
 
         private void Button_Click(object sender, RoutedEventArgs e) {
