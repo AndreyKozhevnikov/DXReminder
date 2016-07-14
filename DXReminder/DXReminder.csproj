@@ -143,7 +143,18 @@
   <ItemGroup>
     <Resource Include="Resources\excl.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\warning.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>If $(ConfigurationName) == Release (  call $(SolutionDir)\..\..\Deploy\AssemblyInfoDeploy\AssemblyInfo.exe $(SolutionDir)DXReminder\Properties\AssemblyInfo.cs -set:15.1 
+echo "Release changed")</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>If $(ConfigurationName) == Release ( xcopy "$(TargetDir)*.exe" "$(SolutionDir)\..\..\Deploy\DXReminderDeploy" /y  /f
+echo "Release completed") else (echo "Debug completed")</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
