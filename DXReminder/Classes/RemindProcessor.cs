@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Xml;
 
 namespace DXReminder.Classes {
-    public class RemindProcessor:INotifyPropertyChanged {
+    public class RemindProcessor : INotifyPropertyChanged {
         public List<Reminder> Reminders { get; set; }
         public ObservableCollection<String> LogList { get; set; }
         string logFileName;
@@ -44,7 +44,7 @@ namespace DXReminder.Classes {
             this.Reminders = _reminders;
             CurrentTime = "not working";
             LogList = new ObservableCollection<string>();
-         
+
         }
         System.Windows.Forms.Timer timer;
         public void Start() {
@@ -54,7 +54,7 @@ namespace DXReminder.Classes {
             timer.Start();
 
         }
-  
+
         void OnTimer(object sender, EventArgs e) {
             ProccessTime(DateTime.Now);
             CurrentTime = DateTime.Now.ToString();
@@ -69,11 +69,11 @@ namespace DXReminder.Classes {
                     ShowNotification(r);
                 }
             }
-            
+
         }
 
         private void ShowNotification(Reminder r) {
-          
+
             NotificationService serv = new NotificationService();
             string st = @" <DataTemplate  xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" > " +
             "<Grid>" +
@@ -118,7 +118,9 @@ namespace DXReminder.Classes {
             string st = String.Format("{0} - {1}", DateTime.Now.ToString(), r.Description);
             Debug.Print(st);
             AddToLogList(st);
+#if !DEBUG
             AddToLogFile(st);
+#endif
         }
         StreamWriter sw;
         private void AddToLogFile(string st) {
@@ -151,7 +153,10 @@ namespace DXReminder.Classes {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
+        ~RemindProcessor() {
+            Debug.Print("dispose");
+            sw.Close();
+        }
         #region
         public List<Reminder> Test_GetAllRemindersForTime(DateTime dt) {
             return GetRemindersForTime(dt);
@@ -165,7 +170,7 @@ namespace DXReminder.Classes {
             }
         }
 
-   
+
 
         public string Test_GetTimeIdFromTime(DateTime tm) {
             return GetTimeIdFromTime(tm);

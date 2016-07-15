@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ namespace DXReminder.Classes {
         public void Deserialize() {
             Reminders = serializer.Deserialize();
         }
-
+     
 
         #region temp
         public void Temp_Serialize() {

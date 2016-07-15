@@ -393,7 +393,6 @@ namespace DXReminder.Classes {
             Assert.AreEqual(2, lst[0].DayOfWeekList[1]);
             Assert.AreEqual(3, lst[1].DayOfWeekList[0]);
             Assert.AreEqual(2, lst[1].DayOfWeekList[1]);
-
         }
         [Test]
         public void ShowNotification() {
@@ -413,7 +412,7 @@ namespace DXReminder.Classes {
             //assert
             Assert.AreEqual(0, App.Current.Windows.Count);
             Assert.AreEqual("testReminder", cont);
-
+            GC.GetTotalMemory(true);
         }
         [Test]
         public void ShowSeveralNotifications() {
