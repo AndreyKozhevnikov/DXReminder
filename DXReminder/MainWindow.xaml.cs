@@ -32,7 +32,11 @@ namespace DXReminder {
             vm.Deserialize();
             DataContext = vm;
             this.Loaded += MainWindow_Loaded;
+#if DEBUG
+            this.Title = "Debug";
+#endif
         }
+
         NotifyIconService serv;
         private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
             this.Visibility = Visibility.Collapsed;

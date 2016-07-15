@@ -63,6 +63,7 @@
                     <RowDefinition Height="9*"/>
                 </Grid.RowDefinitions>
                 <Label Content="{Binding Processor.CurrentTime}" Height="25"/>
+                <ListBox Grid.Row="1" ItemsSource="{Binding Processor.LogList}"/>
             </Grid>
         </dx:DXTabItem>
     </dx:DXTabControl>

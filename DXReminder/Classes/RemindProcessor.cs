@@ -17,6 +17,8 @@ using System.Xml;
 namespace DXReminder.Classes {
     public class RemindProcessor:INotifyPropertyChanged {
         public List<Reminder> Reminders { get; set; }
+        public ObservableCollection<String> LogList { get; set; }
+        string logFileName;
         string _currentTimeId;
         string _currentTime;
         public string CurrentTimeId {
@@ -41,6 +43,8 @@ namespace DXReminder.Classes {
         public RemindProcessor(List<Reminder> _reminders) {
             this.Reminders = _reminders;
             CurrentTime = "not working";
+            LogList = new ObservableCollection<string>();
+         
         }
         System.Windows.Forms.Timer timer;
         public void Start() {
@@ -50,7 +54,7 @@ namespace DXReminder.Classes {
             timer.Start();
 
         }
-      
+  
         void OnTimer(object sender, EventArgs e) {
             ProccessTime(DateTime.Now);
             CurrentTime = DateTime.Now.ToString();
@@ -69,7 +73,7 @@ namespace DXReminder.Classes {
         }
 
         private void ShowNotification(Reminder r) {
-            Debug.Print(r.Description);
+          
             NotificationService serv = new NotificationService();
             string st = @" <DataTemplate  xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" > " +
             "<Grid>" +
@@ -107,6 +111,27 @@ namespace DXReminder.Classes {
             serv.CustomNotificationVisibleMaxCount = 5;
             var not = serv.CreateCustomNotification(r.Description);
             not.ShowAsync();
+            WriteLog(r);
+        }
+
+        private void WriteLog(Reminder r) {
+            string st = String.Format("{0} - {1}", DateTime.Now.ToString(), r.Description);
+            Debug.Print(st);
+            AddToLogList(st);
+            AddToLogFile(st);
+        }
+        StreamWriter sw;
+        private void AddToLogFile(string st) {
+            logFileName = DateTime.Today.ToString("yyyy-dd-MM") + ".log";
+            if (sw == null) {
+                sw = new StreamWriter(logFileName, true);
+                sw.AutoFlush = true;
+            }
+            sw.WriteLine(st);
+        }
+
+        private void AddToLogList(string st) {
+            LogList.Insert(0, st);
         }
 
         private List<Reminder> GetRemindersForTime(DateTime dt) {
@@ -150,6 +175,9 @@ namespace DXReminder.Classes {
         }
         public void Test_ProccessTime(DateTime dt) {
             ProccessTime(dt);
+        }
+        public void Test_AddToLogList(string st) {
+            this.AddToLogList(st);
         }
         #endregion
     }

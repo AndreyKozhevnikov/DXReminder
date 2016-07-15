@@ -459,6 +459,35 @@ namespace DXReminder.Classes {
             Assert.AreEqual("testReminder1", cont1);
             Assert.AreEqual("testReminder2", cont2);
         }
+
+        [Test]
+        public void Test_WriteLog_1() {
+            //arrange
+            RemindProcessor p = new RemindProcessor(null);
+
+            //act
+            p.Test_AddToLogList("testReminder");
+
+            //assert
+            Assert.AreEqual(1, p.LogList.Count);
+            var b = p.LogList[0].Contains("testReminder");
+            Assert.AreEqual(true, b);
+        }
+        [Test]
+        public void Test_WriteLog_2() {
+            //arrange
+            RemindProcessor p = new RemindProcessor(null);
+            //act
+            p.Test_AddToLogList("testReminder1");
+            p.Test_AddToLogList("testReminder2");
+
+            //assert
+            Assert.AreEqual(2, p.LogList.Count);
+            var b1 = p.LogList[0].Contains("testReminder2");
+            var b2 = p.LogList[1].Contains("testReminder1");
+            Assert.AreEqual(true, b1);
+            Assert.AreEqual(true, b2);
+        }
     }
 
 

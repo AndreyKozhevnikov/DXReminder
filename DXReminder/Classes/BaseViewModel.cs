@@ -46,11 +46,10 @@ namespace DXReminder.Classes {
         }
        
         private void StartProcess() {
-          //  Processor = new RemindProcessor(Reminders.ToList());
             Processor.Reminders = Reminders.ToList();
             Processor.Start();
-
         }
+
 
         private void AddNewReminder() {
             if (string.IsNullOrEmpty(UIDescription) || UIDayOfWeekList == null || UITimeList == null || UIDayOfWeekList.Count == 0 || UITimeList.Count == 0) {
