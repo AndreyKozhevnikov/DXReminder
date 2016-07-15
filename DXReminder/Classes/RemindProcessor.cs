@@ -16,7 +16,7 @@ using System.Xml;
 
 namespace DXReminder.Classes {
     public class RemindProcessor:INotifyPropertyChanged {
-        private List<Reminder> reminders;
+        public List<Reminder> Reminders { get; set; }
         string _currentTimeId;
         string _currentTime;
         public string CurrentTimeId {
@@ -39,13 +39,14 @@ namespace DXReminder.Classes {
             }
         }
         public RemindProcessor(List<Reminder> _reminders) {
-            this.reminders = _reminders;
+            this.Reminders = _reminders;
+            CurrentTime = "not working";
         }
         System.Windows.Forms.Timer timer;
         public void Start() {
             timer = new System.Windows.Forms.Timer();
             timer.Tick += OnTimer;
-            timer.Interval = 10000;
+            timer.Interval = 2000;
             timer.Start();
 
         }
@@ -109,7 +110,7 @@ namespace DXReminder.Classes {
         }
 
         private List<Reminder> GetRemindersForTime(DateTime dt) {
-            var lst = reminders.Where(x => x.DayOfWeekList.Contains((int)dt.DayOfWeek) && x.TimeList.Contains(new DateTime(1, 1, 1, dt.Hour, dt.Minute, 0))).ToList();
+            var lst = Reminders.Where(x => x.DayOfWeekList.Contains((int)dt.DayOfWeek) && x.TimeList.Contains(new DateTime(1, 1, 1, dt.Hour, dt.Minute, 0))).ToList();
             return lst;
         }
 

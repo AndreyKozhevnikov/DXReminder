@@ -11,12 +11,14 @@ namespace DXReminder.Classes {
     public class BaseViewModel {
         public BaseViewModel() {
             serializer = new ReminderSerializer();
+            Processor = new RemindProcessor(null);
         }
         public ObservableCollection<Reminder> Reminders { get; set; }
         ICommand _addNewReminderCommand;
         ICommand _startProcessCommand;
         ICommand _serializeCommand;
         ReminderSerializer serializer;
+        public RemindProcessor Processor { get; set; }
         public string UIDescription { get; set; }
         public List<int> UIDayOfWeekList { get; set; }
         public List<DateTime> UITimeList { get; set; }
@@ -42,9 +44,10 @@ namespace DXReminder.Classes {
                 return _serializeCommand;
             }
         }
-        public RemindProcessor Processor { get; set; }
+       
         private void StartProcess() {
-            Processor = new RemindProcessor(Reminders.ToList());
+          //  Processor = new RemindProcessor(Reminders.ToList());
+            Processor.Reminders = Reminders.ToList();
             Processor.Start();
 
         }

@@ -35,8 +35,6 @@ namespace DXReminder.Classes {
                 int val =int.Parse(x.Value);
                 DayOfWeekList.Add(val);
             }
-        
-       //     DayOfWeekList = int.Parse(_dayOfWeek);
         }
         public override string ToString() {
           

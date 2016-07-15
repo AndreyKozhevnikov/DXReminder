@@ -62,7 +62,7 @@
                     <RowDefinition />
                     <RowDefinition Height="9*"/>
                 </Grid.RowDefinitions>
-                <Label Content="{Binding Processor.CurrentTime}"/>
+                <Label Content="{Binding Processor.CurrentTime}" Height="25"/>
             </Grid>
         </dx:DXTabItem>
     </dx:DXTabControl>
