@@ -155,7 +155,11 @@ namespace DXReminder.Classes {
         }
         ~RemindProcessor() {
             Debug.Print("dispose");
-            sw.Close();
+            if (sw != null) {
+             
+                sw.Close();
+
+            }
         }
         #region
         public List<Reminder> Test_GetAllRemindersForTime(DateTime dt) {

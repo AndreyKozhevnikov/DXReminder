@@ -40,7 +40,7 @@ namespace DXReminder {
         NotifyIconService serv;
         private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
             this.Visibility = Visibility.Collapsed;
-             serv = new NotifyIconService();
+            serv = new NotifyIconService();
             IconBitmapDecoder ibd = new IconBitmapDecoder(
 
                new Uri(@"pack://application:,,/Resources/warning.ico", UriKind.RelativeOrAbsolute),
@@ -56,6 +56,10 @@ namespace DXReminder {
             BarButtonItem item = new BarButtonItem() { Content = "Close application" };
             item.ItemClick += item_ItemClick;
             menu.Items.Add(item);
+            BarButtonItem item2 = new BarButtonItem() { Content = "Change visibility" };
+            item2.ItemClick += item_ItemClick2;
+            menu.Items.Add(item2);
+
             serv.ContextMenu = menu;
 
             Type vs1 = typeof(AttachableObjectBase);
@@ -76,6 +80,16 @@ namespace DXReminder {
 
             (serv as INotifyIconService).SetStatusIcon(v);
         }
+
+        private void item_ItemClick2(object sender, ItemClickEventArgs e) {
+            if (this.Visibility == Visibility.Visible) {
+                this.Visibility = Visibility.Collapsed;
+            }
+            else {
+                this.Visibility = Visibility.Visible;
+            }
+        }
+
         protected override void OnClosing(CancelEventArgs e) {
             e.Cancel = shouldLive;
             if (shouldLive) {
@@ -111,8 +125,8 @@ namespace DXReminder {
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {
             // vm.Test_Proccessor.Test_ShowNotification(new Reminder("newrem",null,null));
-            vm.Processor.Test_ProccessTime(new DateTime(2016, 7, 13, 15, 7, 1));
+            vm.Processor.Test_ProccessTime(new DateTime(2016, 7, 15, 15, 0, 0));
         }
-   
+
     }
 }
