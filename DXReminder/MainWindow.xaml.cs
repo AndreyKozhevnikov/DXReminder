@@ -56,9 +56,6 @@ namespace DXReminder {
             BarButtonItem item = new BarButtonItem() { Content = "Close application" };
             item.ItemClick += item_ItemClick;
             menu.Items.Add(item);
-            BarButtonItem item2 = new BarButtonItem() { Content = "Change visibility" };
-            item2.ItemClick += item_ItemClick2;
-            menu.Items.Add(item2);
 
             serv.ContextMenu = menu;
 
@@ -67,8 +64,8 @@ namespace DXReminder {
             v1.SetValue(serv, new FrameworkElement());
 
             Type vs = typeof(NotifyIconService);
-            MethodInfo fi = vs.GetMethod("OnMainWindowLoaded", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-            fi.Invoke(serv, new object[2] { null, null });
+            MethodInfo fi = vs.GetMethod("InitializeWpfNotifyIcon", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            fi.Invoke(serv, null);
 
             MethodInfo setMenu = vs.GetMethod("SetActualContextMenu", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
             setMenu.Invoke(serv, null);
