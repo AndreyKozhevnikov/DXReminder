@@ -11,7 +11,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="MainWindow"
     Width="525"
-    Height="450"
+    Height="520"
     ShowInTaskbar="False"
     mc:Ignorable="d">
     <dx:DXTabControl>
