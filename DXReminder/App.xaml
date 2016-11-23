@@ -16,7 +16,7 @@
                 </Border>
                 <Border Grid.Column="1" CornerRadius="0,10,10,0" Background="Blue">
                     <Label Content="{Binding}" FontSize="35" FontWeight="Bold"
-                           Background="Yellow"
+                           Background="Turquoise"
                                           Margin="10,15,15,15"
                                           VerticalAlignment="Stretch"
                                           HorizontalAlignment="Stretch"

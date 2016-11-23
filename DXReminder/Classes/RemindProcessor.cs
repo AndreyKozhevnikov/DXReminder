@@ -84,16 +84,16 @@ namespace DXReminder.Classes {
 
                "  </Grid.ColumnDefinitions>" +
 
-                " <Border Background = \"Crimson\" CornerRadius = \"10,0,0,10\">" +
+                " <Border Background = \"Blue\" CornerRadius = \"10,0,0,10\">" +
 
                        " <Image Source = \"Resources/excl.jpg\" Stretch = \"Fill\" Margin = \"10\"/>" +
 
                        "  </Border>" +
 
-                        " <Border Grid.Column = \"1\" CornerRadius = \"0,10,10,0\" Background = \"Crimson\">" +
+                        " <Border Grid.Column = \"1\" CornerRadius = \"0,10,10,0\" Background = \"Blue\">" +
 
                                   "<Label Content = \"{Binding}\" FontSize = \"35\" FontWeight = \"Bold\" " +
-                           "Background=\"SandyBrown\" " +
+                           "Background=\"Turquoise\" " +
                                           "Margin = \"10,15,15,15\" " +
                                           "VerticalAlignment = \"Stretch\" " +
                                           "HorizontalAlignment = \"Stretch\" " +
