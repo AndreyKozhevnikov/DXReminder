@@ -76,6 +76,8 @@ namespace DXReminder {
 
 
             (serv as INotifyIconService).SetStatusIcon(v);
+
+            vm.StartProcessCommand.Execute(null);
         }
 
         private void item_ItemClick2(object sender, ItemClickEventArgs e) {
