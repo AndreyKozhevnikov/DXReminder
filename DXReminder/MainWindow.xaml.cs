@@ -102,7 +102,7 @@ namespace DXReminder {
         }
         void item_ItemClick(object sender, ItemClickEventArgs e) {
             shouldLive = false;
-            this.Close();
+            Environment.Exit(0);
         }
         bool shouldLive = true;
         private void OnLeftClick() {
