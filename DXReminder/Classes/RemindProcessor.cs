@@ -131,7 +131,10 @@ namespace DXReminder.Classes {
             }
             sw.WriteLine(st);
         }
-
+        public void CloseStreamWriter() {
+            sw.Flush();
+            sw.Close();
+        }
         private void AddToLogList(string st) {
             LogList.Insert(0, st);
         }

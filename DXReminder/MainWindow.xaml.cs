@@ -101,6 +101,7 @@ namespace DXReminder {
             }
         }
         void item_ItemClick(object sender, ItemClickEventArgs e) {
+            this.vm.Processor.CloseStreamWriter();
             shouldLive = false;
             Environment.Exit(0);
         }
